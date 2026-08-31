@@ -1,9 +1,95 @@
 # B5-2 Round 01 — Beginner Guide
 
 구분: **선택 미션 (OPTIONAL)**  
-현재 모드: **Phase A — REFERENCE BUILD**
+현재 모드: **Phase A — REFERENCE BUILD / PRE-RUNTIME AUDIT**
 
 > 지금은 기준 구현·학습자료·검증계획을 먼저 준비합니다. 브라우저/DB 실제 실행 결과는 Phase C에서 사용자가 한 단계씩 검증하며 Evidence로 확정합니다.
+
+## 🚀 빠른 시작(Quick Start)
+
+### 처음 시작하는 경우
+
+1. [`START-CHECK.md`](START-CHECK.md)에서 선행 지식을 확인합니다.
+2. 현재 실행 환경(Current Runtime Context)을 정합니다.
+   - 학교 Mac → **MAC-V**: OrbStack → Ubuntu 24.04
+   - 개인 Win11 → **WIN-V**: WSL2 → Ubuntu 24.04
+3. 저장소와 Python 상태를 먼저 확인합니다.
+
+```bash
+pwd
+git status --short
+python3 --version
+```
+
+정상 기준:
+
+```text
+[ ] B5-2 저장소 안에 있다.
+[ ] 예상하지 않은 Git 변경이 없다.
+[ ] Python 3.10 이상이다.
+```
+
+4. `training/round-01-clear/reference`에서 가상환경을 준비합니다.
+
+```bash
+cd training/round-01-clear/reference
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+5. Round 디렉터리에서 실행 전 검증(Verification)을 수행합니다.
+
+```bash
+cd ..
+bash environment/verify.sh
+```
+
+6. `0 FAIL`을 확인한 뒤에만 서버 실행 단계로 이동합니다. 이 검증은 실제 브라우저 Runtime을 대신하지 않습니다.
+
+### 이미 환경을 준비했고 다시 이어서 하는 경우
+
+```bash
+cd training/round-01-clear/reference
+source .venv/bin/activate
+cd ..
+bash environment/verify.sh
+```
+
+```text
+✅ GO
+→ Result: N PASS / 0 FAIL
+→ reference/로 이동
+→ uvicorn app.main:app --reload
+→ 실제 CRUD/PRG/SQLite/Not Found 검증
+
+❌ STOP
+→ FAIL 항목부터 해결
+→ 실패 상태에서 Runtime PASS 또는 CLEAR 기록 금지
+```
+
+> Quick Start는 아래 상세 절차를 대체하지 않습니다. 실제 PASS/CLEAR는 Runtime, Verification, Evidence가 모두 확인된 뒤에만 기록합니다.
+
+## 📑 목차
+
+1. [00. 미션 한눈에 보기](#00-미션-한눈에-보기)
+2. [01. 무엇을 만드는가](#01-무엇을-만드는가)
+3. [02. 최종 결과](#02-최종-결과)
+4. [03. 평가자가 확인하는 것](#03-평가자가-확인하는-것)
+5. [04. 사전 준비](#04-사전-준비)
+6. [05. 반드시 알아야 할 용어](#05-반드시-알아야-할-용어)
+7. [06. 핵심 개념](#06-핵심-개념)
+8. [07. Reference 프로젝트 구조](#07-reference-프로젝트-구조)
+9. [08. 환경 확인 — Phase C](#08-환경-확인--phase-c)
+10. [09. 환경 설정 — Phase C](#09-환경-설정--phase-c)
+11. [10. 서버 실행 — Phase C](#10-서버-실행--phase-c)
+12. [11. CRUD 따라가기 — Phase C](#11-crud-따라가기--phase-c)
+13. [12. DB 직접 확인 — Phase C](#12-db-직접-확인--phase-c)
+14. [13. Reference 검증](#13-reference-검증)
+15. [14. 자주 발생하는 오류](#14-자주-발생하는-오류)
+16. [15. Evidence](#15-evidence)
+17. [16. 예상 질문과 답변](#16-예상-질문과-답변)
+18. [17. Mission CLEAR](#17-mission-clear)
 
 ## 00. 미션 한눈에 보기
 
@@ -39,7 +125,7 @@ Reference 주제는 **Memo 관리**입니다.
 - 존재하지 않는 메모 안내
 - SQLite 영구 저장
 
-로그인/인증/인가와 모델 간 연관관계는 공식 범위 밖이므로 구현하지 않습니다.
+로그인/인증/인가와 모델 간 연관관계는 공식 제약에 따라 구현하지 않습니다. 이 내용은 다음 미션의 학습 범위입니다.
 
 ## 02. 최종 결과
 
@@ -90,25 +176,25 @@ Reference 의존성은 `reference/requirements.txt`에 있습니다.
 
 ## 05. 반드시 알아야 할 용어
 
-### 라우터 (Router)
+### 라우터(Router)
 URL과 HTTP 메서드를 받아 어떤 함수가 처리할지 연결합니다. B5-2에서는 요청/응답과 화면 전환을 담당합니다.
 
-### 서비스 (Service)
+### 서비스(Service)
 비즈니스 규칙을 모읍니다. Reference에서는 제목/내용 검증을 담당합니다.
 
-### 저장소 (Repository)
+### 저장소(Repository)
 DB 접근을 전담합니다. Reference에서는 SQLAlchemy `Session`으로 CRUD를 수행합니다.
 
-### ORM (Object-Relational Mapping)
+### 객체 관계 매핑(Object-Relational Mapping, ORM)
 Python 객체와 DB 테이블을 연결하는 방식입니다. `Memo` 객체가 SQLite의 `memos` 행과 연결됩니다.
 
-### SSR (Server-Side Rendering)
+### 서버 측 렌더링(Server-Side Rendering, SSR)
 서버가 HTML을 만들어 브라우저에 보내는 방식입니다. B5-2는 Jinja2 `TemplateResponse`를 사용합니다.
 
-### 의존성 주입 (Dependency Injection)
+### 의존성 주입(Dependency Injection, DI)
 필요한 객체를 함수 내부에서 직접 만들기보다 외부에서 제공받는 방식입니다. `Depends(get_db)`가 요청별 DB Session을 제공합니다.
 
-### PRG (Post-Redirect-Get)
+### POST-리다이렉트-GET(Post-Redirect-Get, PRG)
 POST 처리 후 바로 HTML을 그리지 않고 Redirect한 뒤 GET 화면으로 이동하는 패턴입니다.
 
 ## 06. 핵심 개념
@@ -205,7 +291,7 @@ uvicorn app.main:app --reload
 `GET /memos/new` 폼에서 제목/내용을 입력하고 저장합니다. `POST /memos/` 처리 후 상세 화면으로 303 Redirect되어야 합니다.
 
 ### Step 4 — 상세
-`GET /memos/{id}`에서 id, 제목, 내용, 작성/수정 시점과 수정·삭제·목록 이동을 확인합니다.
+`GET /memos/{id}`에서 **id, 제목, 내용, 작성/수정 시점**과 수정·삭제·목록 이동을 확인합니다.
 
 ### Step 5 — 수정
 수정 폼에서 값을 변경합니다. 성공 후 다시 상세 화면으로 303 Redirect되어야 합니다.
@@ -243,6 +329,8 @@ bash environment/verify.sh
 [PASS] ...
 Result: N PASS / 0 FAIL
 ```
+
+검증 항목에는 Python 3.10+, 공식 의존성 허용 목록, Python 문법, PRG 303, Form(), Depends(get_db), SQLite 설정, Repository CRUD, 상세 전체 필드, 폼/홈/SSR 구조가 포함됩니다.
 
 이 검증은 실제 브라우저 Runtime을 대신하지 않습니다.
 
