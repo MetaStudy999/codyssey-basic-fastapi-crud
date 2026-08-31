@@ -95,7 +95,8 @@ else
   fail "create/update/delete PRG 303 redirects present"
 fi
 
-if [[ "$(grep -c 'Form(' "$APP_DIR/routers/memos.py")" -ge 4 ]]; then
+form_occurrences="$(grep -oF 'Form(' "$APP_DIR/routers/memos.py" | wc -l | tr -d ' ')"
+if [[ "$form_occurrences" -ge 4 ]]; then
   pass "FastAPI Form() create/update inputs present"
 else
   fail "FastAPI Form() create/update inputs present"
@@ -139,7 +140,8 @@ else
   fail "create/update form has POST and cancel navigation"
 fi
 
-if [[ "$(grep -c 'href="/memos' "$APP_DIR/templates/home.html")" -ge 2 ]]; then
+home_link_occurrences="$(grep -oF 'href="/memos' "$APP_DIR/templates/home.html" | wc -l | tr -d ' ')"
+if [[ "$home_link_occurrences" -ge 2 ]]; then
   pass "home page has at least two feature links"
 else
   fail "home page has at least two feature links"
