@@ -47,3 +47,27 @@ flowchart TD
 <ins>실제 코드 개발·실행·학습자 숙달은 아직 미실시입니다.</ins> 이전 Round의 코드·PASS는 참고만 하며 신규 미션 증빙으로 사용하지 않습니다.
 
 [중앙 학습 표준](https://github.com/MetaStudy999/codyssey-basic/blob/main/standards/LEARNER-CENTERED-AI-LEARNING-STANDARD.md) · [미션 학습계획](LEARNING-SYSTEM-PLAN.md) · [00단계 README](README.md).
+
+## 5. 한글·영어·공식 약어와 설명·재현 확인
+
+처음 나오는 기술 용어를 **한글명(English Full Name, 공식 약어)**로 익힙니다. 별도 약어가 없는 경우에는 만들지 않습니다.
+
+| 한글명 | 영어 원명 | 공식·통용 약어 | 한 줄 설명 |
+|---|---|---|---|
+| **생성·조회·수정·삭제** | Create, Read, Update, Delete | CRUD | 기본 데이터 처리 네 가지 |
+| **응용 프로그램 프로그래밍 인터페이스** | Application Programming Interface | API | 서비스와 요청을 연결하는 규칙 |
+| **하이퍼텍스트 전송 규약** | Hypertext Transfer Protocol | HTTP | 웹 요청·응답에 쓰이는 규약 |
+| **자바스크립트 객체 표기법** | JavaScript Object Notation | JSON | 데이터 교환에 많이 쓰이는 텍스트 형식 |
+
+**자기 말로 설명:** CRUD(Create, Read, Update, Delete)는 데이터를 만들고 읽고 수정하고 지우는 네 가지 기본 행동입니다. 웹서비스 요청이 어떤 종류인지 구분하도록 돕습니다.
+
+**종이 재현 예상 단계**
+1. 사용자가 게시글 수정을 요청했다고 가정.
+2. 요청값을 확인하고 수정 작업을 처리할 계획 세우기.
+3. 수정된 내용 또는 오류를 응답한다고 예상.
+
+**오해와 한계:** CRUD 네 작업이 실제로 성공했다는 주장은 HTTP 상태·데이터 결과·테스트 검증을 요구합니다.
+
+**학습 확인:** 용어를 말하고, 순서를 종이에 다시 그리고, 예상 결과와 실제 측정의 차이를 설명할 수 있나요?
+
+**상태:** 교육용 설명·예상답만 기재. 실제 신규 구현, 테스트 및 학습자 L4/L5 독립 재현은 NOT_STARTED / NOT_VERIFIED.
